@@ -162,3 +162,10 @@ cython_debug/
 
 # Mac
 .DS_Store
+
+*.json*
+*.pkl*
+LLaMA-Factory/*
+/24/07/few_shot_sft/LLaMA-Factory/*
+*.pkl
+*.log
