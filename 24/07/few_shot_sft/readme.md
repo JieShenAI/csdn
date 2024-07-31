@@ -50,6 +50,6 @@
 * see_result.ipynb
 导入保存到objs文件夹中的预测结果，并进行结果的渲染
 最后结果如下图所示：
-[./result.png](./result.png)
+![./result.png](./result.png)
 
 
