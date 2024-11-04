@@ -9,7 +9,7 @@
 
 `code.py`: 为可运行的代码，只需要输入存放工商数据的文件夹路径即可。修改Mysql数据库名和密码。
 
-csdn原始文章：[]()
+csdn原始文章：[大规模企业工商信息导入MySQL数据库的技术实战与优化](https://blog.csdn.net/sjxgghg/article/details/143242136)
 
 
 ## 1. 表结构设计
