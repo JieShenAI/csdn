@@ -90,7 +90,7 @@ if __name__ == "__main__":
     questions = []
     labels = []
 
-    for _ in range(10000):
+    for _ in range(100):
         question, label = generate_arithmetic_expression(2)
         questions.append(prompt_template.format(question=question))
         labels.append(label)
@@ -136,3 +136,9 @@ if __name__ == "__main__":
     end_time = time.time()
     calculate_time_difference(start_time, end_time)
     print(right, except_cnt, not_equal)
+
+    print(
+        f"Question: {questions[0]}\n"
+        f"LLM Infer: {results[0].generations[0][0].text}\n"
+        f"label: {labels[0]}"
+    )
