@@ -8,7 +8,7 @@ from typing import List, Tuple, TypedDict
 from aiolimiter import AsyncLimiter
 
 # 创建限速器，每秒最多发出 5 个请求
-limiter = AsyncLimiter(5, 1)
+limiter = AsyncLimiter(6, 1)
 
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
@@ -25,6 +25,7 @@ class LLMAPI:
     """
     大模型API的调用类
     """
+
     base_url: str
     api_key: str  # 每个API的key不一样
     uid: int
@@ -63,7 +64,9 @@ async def _run_task_with_progress(task, pbar):
     return result
 
 
-async def run_api(llms: List[LLMAPI], data: List[str]) -> Tuple[List[str], List[LLMAPI]]:
+async def run_api(
+    llms: List[LLMAPI], data: List[str]
+) -> Tuple[List[str], List[LLMAPI]]:
     results = [call_llm(llms[i % len(llms)], text) for i, text in enumerate(data)]
 
     # 使用 tqdm 创建一个进度条
@@ -79,13 +82,27 @@ if __name__ == "__main__":
     load_dotenv()
 
     # 四则运算提示词模板
+    # prompt_template = """
+    # 请将以下表达式的计算结果返回为 JSON 格式：
+    # {{
+    #   "expression": "{question}",
+    #   "result": ?
+    # }}
+    # """
+
     prompt_template = """
-    请将以下表达式的计算结果返回为 JSON 格式：
-    {{
-      "expression": "{question}",
-      "result": ?
-    }}
-    """
+    你是一名擅长数学运算的助手，负责逐步推理并解决四则运算问题。请按照以下步骤进行：
+
+    1. 阅读并理解问题。
+    2. 分步计算，逐步解决问题。
+    3. 给出最终的结果。
+    4. 按照 JSON 格式输出结果，包括：
+    - reason: 详细的推理过程。
+    - infer: 最终的计算结果。
+
+    问题：{question}
+    请给出分析和结果。
+    """.strip()
 
     questions = []
     labels = []
@@ -103,7 +120,9 @@ if __name__ == "__main__":
     api_keys = os.getenv("API_KEY").split(",")
     base_url = os.getenv("BASE_URL")
     # 创建LLM
-    llms = [LLMAPI(base_url=base_url, api_key=key, uid=i) for i, key in enumerate(api_keys)]
+    llms = [
+        LLMAPI(base_url=base_url, api_key=key, uid=i) for i, key in enumerate(api_keys)
+    ]
     results, llms = asyncio.run(run_api(llms, questions))
 
     right = 0  # 大模型回答正确
@@ -118,7 +137,7 @@ if __name__ == "__main__":
                 except_cnt += 1
                 continue
 
-            res = res.get("result", None)
+            res = res.get("infer", None)
             if res is None:
                 except_cnt += 1
                 continue
@@ -130,7 +149,7 @@ if __name__ == "__main__":
                 not_equal += 1
         except Exception as e:
             print(e)
-            print(f"question:{q}\nresult:{res}")
+            print(f"except: \nquestion:{q}\nresult:{res}")
 
     print("accuracy: {}%".format(right / len(questions) * 100))
     end_time = time.time()
