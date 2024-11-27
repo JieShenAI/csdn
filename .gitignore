@@ -168,3 +168,8 @@ LLaMA-Factory/*
 /24/07/few_shot_sft/LLaMA-Factory/*
 *.pkl
 *.log
+output/
+.env
+*.json*
+*.csv
+*.xls*

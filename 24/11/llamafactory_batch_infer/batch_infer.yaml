@@ -1,0 +1,31 @@
+# examples/train_lora/llama3_lora_predict.yaml
+### model
+model_name_or_path: qwen/Qwen2.5-7B-Instruct
+# adapter_name_or_path: saves/xxx/lora/sft
+
+# deepspeed: examples/deepspeed/ds_z3_config.yaml # deepspeed配置文件
+
+### method
+stage: sft
+do_predict: true
+# finetuning_type: lora
+
+### dataset
+# eval_dataset: identity,alpaca_en_demo
+eval_dataset: calculate
+template: qwen
+cutoff_len: 1024
+# max_samples: 50
+overwrite_cache: true
+preprocessing_num_workers: 16
+
+### output
+output_dir: /绝对路径/llamafactory_batch_infer/output
+overwrite_output_dir: true
+
+### eval
+per_device_eval_batch_size: 1
+predict_with_generate: true
+ddp_timeout: 180000000
+
+# nohup llamafactory-cli train /mnt/mydisk/github/csdn/24/11/llamafactory_batch_infer/batch_vllm.yaml
