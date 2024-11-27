@@ -1,0 +1,8 @@
+model_name_or_path: qwen/Qwen2.5-7B-Instruct
+# adapter_name_or_path: ../saves/qwen2.5-7B/ner_epoch5/
+template: qwen
+finetuning_type: lora
+infer_backend: vllm
+vllm_enforce_eager: true
+
+# API_PORT=8000 llamafactory-cli api vllm_api.yaml

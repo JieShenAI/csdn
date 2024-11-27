@@ -4,7 +4,7 @@ import time
 
 from tqdm import tqdm
 from dataclasses import dataclass, field
-from typing import List, Tuple, TypedDict
+from typing import List, Tuple
 from aiolimiter import AsyncLimiter
 
 # 创建限速器，每秒最多发出 5 个请求
@@ -17,65 +17,66 @@ from utils import (
     generate_arithmetic_expression,
     re_parse_json,
     calculate_time_difference,
+    AsyncLLMAPI,
 )
 
 
-@dataclass
-class LLMAPI:
-    """
-    大模型API的调用类
-    """
+# @dataclass
+# class LLMAPI:
+#     """
+#     大模型API的调用类
+#     """
 
-    base_url: str
-    api_key: str  # 每个API的key不一样
-    uid: int
-    cnt: int = 0  # 统计每个API被调用了多少次
-    llm: ChatOpenAI = field(init=False)  # 自动创建的对象，不需要用户传入
+#     base_url: str
+#     api_key: str  # 每个API的key不一样
+#     uid: int
+#     cnt: int = 0  # 统计每个API被调用了多少次
+#     llm: ChatOpenAI = field(init=False)  # 自动创建的对象，不需要用户传入
 
-    def __post_init__(self):
-        # 初始化 llm 对象
-        self.llm = self.create_llm()
+#     def __post_init__(self):
+#         # 初始化 llm 对象
+#         self.llm = self.create_llm()
 
-    def create_llm(self):
-        # 创建 llm 对象
-        return ChatOpenAI(
-            model="gpt-4o-mini",
-            base_url=self.base_url,
-            api_key=self.api_key,
-        )
+#     def create_llm(self):
+#         # 创建 llm 对象
+#         return ChatOpenAI(
+#             model="gpt-4o-mini",
+#             base_url=self.base_url,
+#             api_key=self.api_key,
+#         )
 
-    async def agenerate(self, text):
-        self.cnt += 1
-        res = await self.llm.agenerate([text])
-        return res
-
-
-async def call_llm(llm: LLMAPI, text: str):
-    # 异步协程 限速
-    async with limiter:
-        res = await llm.agenerate(text)
-        return res
+#     async def agenerate(self, text):
+#         self.cnt += 1
+#         res = await self.llm.agenerate([text])
+#         return res
 
 
-async def _run_task_with_progress(task, pbar):
-    """包装任务以更新进度条"""
-    result = await task
-    pbar.update(1)
-    return result
+# async def call_llm(llm: LLMAPI, text: str):
+#     # 异步协程 限速
+#     async with limiter:
+#         res = await llm.agenerate(text)
+#         return res
 
 
-async def run_api(
-    llms: List[LLMAPI], data: List[str]
-) -> Tuple[List[str], List[LLMAPI]]:
-    results = [call_llm(llms[i % len(llms)], text) for i, text in enumerate(data)]
+# async def _run_task_with_progress(task, pbar):
+#     """包装任务以更新进度条"""
+#     result = await task
+#     pbar.update(1)
+#     return result
 
-    # 使用 tqdm 创建一个进度条
-    with tqdm(total=len(results)) as pbar:
-        # 使用 asyncio.gather 并行执行任务
-        results = await asyncio.gather(
-            *[_run_task_with_progress(task, pbar) for task in results]
-        )
-    return results, llms
+
+# async def run_api(
+#     llms: List[LLMAPI], data: List[str]
+# ) -> Tuple[List[str], List[LLMAPI]]:
+#     results = [call_llm(llms[i % len(llms)], text) for i, text in enumerate(data)]
+
+#     # 使用 tqdm 创建一个进度条
+#     with tqdm(total=len(results)) as pbar:
+#         # 使用 asyncio.gather 并行执行任务
+#         results = await asyncio.gather(
+#             *[_run_task_with_progress(task, pbar) for task in results]
+#         )
+#     return results, llms
 
 
 if __name__ == "__main__":
@@ -121,9 +122,11 @@ if __name__ == "__main__":
     base_url = os.getenv("BASE_URL")
     # 创建LLM
     llms = [
-        LLMAPI(base_url=base_url, api_key=key, uid=i) for i, key in enumerate(api_keys)
+        AsyncLLMAPI(base_url=base_url, api_key=key, uid=i)
+        for i, key in enumerate(api_keys)
     ]
-    results, llms = asyncio.run(run_api(llms, questions))
+    # results, llms = asyncio.run(run_api(llms, questions))
+    results, llms = AsyncLLMAPI.run_data_async(llms, questions)
 
     right = 0  # 大模型回答正确
     except_cnt = 0  # 大模型不按照json格式返回结果
