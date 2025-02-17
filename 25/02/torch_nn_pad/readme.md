@@ -127,7 +127,7 @@ pad4, pad4.shape
 
 ### pad 长度为6
 
-pad 长度为 4， (1, 1, 0, 1, 1, 0)：
+pad 长度为 6， (1, 1, 0, 1, 1, 0)：
 
 ```python
 pad6 = pad(a, (1, 1, 0, 1, 1, 0), value=IGNORE)
@@ -147,7 +147,7 @@ pad6, pad6.shape
  torch.Size([2, 3, 4]))
 ```
 
-下图是对pad长度为4的一个解释：
+下图是对pad长度为6的一个解释：
 
 ![image-20250217154054186](readme.assets/image-20250217154054186.png)
 
