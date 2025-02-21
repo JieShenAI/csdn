@@ -1,4 +1,4 @@
-# 大模型预训练代码实战
+﻿# 大模型预训练代码实战
 
 ## 任务介绍
 
@@ -14,7 +14,7 @@
 
 将使用下述5条数据微调大模型，对比一下，预训练与有监督微调的区别。
 
-```python
+```json
 [
   {
     "instruct": "请你给哪吒写一首诗：",
@@ -78,7 +78,7 @@ print(text)
 
 输出：
 
-```python
+```
 <|im_start|>system
 You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
 <|im_start|>user
@@ -95,7 +95,7 @@ You are Qwen, created by Alibaba Cloud. You are a helpful assistant.<|im_end|>
 
 本文是大模型预训练与有监督微调的手搓简化版本，设置预训练和有监督微调的输入文本一样，都是把 `instruct + input + label` 拼接起来，在结尾添加一个结束符号。
 
-```python
+```json
 instruct + input + label + tokenizer.eos_token
 ```
 
@@ -132,7 +132,7 @@ model = model.to("cuda:0")
 tokenizer = AutoTokenizer.from_pretrained(model_dir, padding_side="right")
 ```
 
-![image-20250221105420353](readme.assets/image-20250221105420353.png)
+![image-20250221105420353](https://img2023.cnblogs.com/blog/2589035/202502/2589035-20250221160339678-744190587.png)
 
 据上图所示，发现 Qwen 模型 文本填充与文本结束符 是同一个符号。这给后续计算文本停止符号的 loss计算 带来了麻烦。
 
