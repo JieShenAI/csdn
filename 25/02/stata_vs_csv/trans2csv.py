@@ -15,6 +15,7 @@ for idx, file in tqdm(enumerate(files)):
     if os.path.exists(output_file):
         print(f"{idx} - {file} already existed, just skip!")
         continue
+    
     print(f"{idx} - {file} loading ...")
     df = pd.read_stata(raw_file)
     print("writing csv, please wait!")
