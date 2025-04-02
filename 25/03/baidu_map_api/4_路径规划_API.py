@@ -124,8 +124,8 @@ async def fetch_all():
         async with aiohttp.ClientSession() as session:
             # 海南省
             for idx, row in df.iterrows():
-                if row["origin_prov"] == "海南省" or row["target_prov"] == "海南省":
-                    continue
+                # if row["origin_prov"] == "海南省" or row["target_prov"] == "海南省":
+                #     continue
                 origin_lon = row["origin_经度"]
                 origin_lat = row["origin_纬度"]
                 target_lon = row["target_经度"]
