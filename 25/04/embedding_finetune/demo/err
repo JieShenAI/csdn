@@ -1,0 +1,103 @@
+下述是使用deepspeed进行finetune时的错误信息：
+
+04/04/2025 15:27:01 - INFO - FlagEmbedding.abc.finetune.embedder.AbsDataset -   loading data from ./ft_data/training.json ...
+Generating train split: 5584 examples [00:00, 72430.31 examples/s]
+/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/FlagEmbedding/finetune/embedder/encoder_only/base/runner.py:75: FutureWarning: `tokenizer` is deprecated and will be removed in version 5.0.0 for `EncoderOnlyEmbedderTrainer.__init__`. Use `processing_class` instead.
+  trainer = EncoderOnlyEmbedderTrainer(
+Using /home/jie/.cache/torch_extensions/py310_cu124 as PyTorch extensions root...
+Detected CUDA files, patching ldflags
+Emitting ninja build file /home/jie/.cache/torch_extensions/py310_cu124/fused_adam/build.ninja...
+/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/utils/cpp_extension.py:1964: UserWarning: TORCH_CUDA_ARCH_LIST is not set, all archs for visible cards are included for compilation. 
+If this is not desired, please set os.environ['TORCH_CUDA_ARCH_LIST'].
+  warnings.warn(
+Building extension module fused_adam...
+Allowing ninja to set a default number of workers... (overridable by setting the environment variable MAX_JOBS=N)
+[1/2] /usr/local/cuda/bin/nvcc --generate-dependencies-with-compile --dependency-output multi_tensor_adam.cuda.o.d -DTORCH_EXTENSION_NAME=fused_adam -DTORCH_API_INCLUDE_EXTENSION_H -DPYBIND11_COMPILER_TYPE=\"_gcc\" -DPYBIND11_STDLIB=\"_libstdcpp\" -DPYBIND11_BUILD_ABI=\"_cxxabi1011\" -I/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/deepspeed/ops/csrc/includes -I/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/deepspeed/ops/csrc/adam -isystem /home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/include -isystem /home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/include/torch/csrc/api/include -isystem /home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/include/TH -isystem /home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/include/THC -isystem /usr/local/cuda/include -isystem /home/jie/anaconda3/envs/llm/include/python3.10 -D_GLIBCXX_USE_CXX11_ABI=0 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr -gencode=arch=compute_86,code=compute_86 -gencode=arch=compute_86,code=sm_86 --compiler-options '-fPIC' -O3 -DVERSION_GE_1_1 -DVERSION_GE_1_3 -DVERSION_GE_1_5 -lineinfo --use_fast_math -gencode=arch=compute_86,code=sm_86 -gencode=arch=compute_86,code=compute_86 -DBF16_AVAILABLE -U__CUDA_NO_BFLOAT16_OPERATORS__ -U__CUDA_NO_BFLOAT162_OPERATORS__ -U__CUDA_NO_BFLOAT16_CONVERSIONS__ -std=c++17 -c /home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/deepspeed/ops/csrc/adam/multi_tensor_adam.cu -o multi_tensor_adam.cuda.o 
+FAILED: multi_tensor_adam.cuda.o 
+/usr/local/cuda/bin/nvcc --generate-dependencies-with-compile --dependency-output multi_tensor_adam.cuda.o.d -DTORCH_EXTENSION_NAME=fused_adam -DTORCH_API_INCLUDE_EXTENSION_H -DPYBIND11_COMPILER_TYPE=\"_gcc\" -DPYBIND11_STDLIB=\"_libstdcpp\" -DPYBIND11_BUILD_ABI=\"_cxxabi1011\" -I/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/deepspeed/ops/csrc/includes -I/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/deepspeed/ops/csrc/adam -isystem /home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/include -isystem /home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/include/torch/csrc/api/include -isystem /home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/include/TH -isystem /home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/include/THC -isystem /usr/local/cuda/include -isystem /home/jie/anaconda3/envs/llm/include/python3.10 -D_GLIBCXX_USE_CXX11_ABI=0 -D__CUDA_NO_HALF_OPERATORS__ -D__CUDA_NO_HALF_CONVERSIONS__ -D__CUDA_NO_BFLOAT16_CONVERSIONS__ -D__CUDA_NO_HALF2_OPERATORS__ --expt-relaxed-constexpr -gencode=arch=compute_86,code=compute_86 -gencode=arch=compute_86,code=sm_86 --compiler-options '-fPIC' -O3 -DVERSION_GE_1_1 -DVERSION_GE_1_3 -DVERSION_GE_1_5 -lineinfo --use_fast_math -gencode=arch=compute_86,code=sm_86 -gencode=arch=compute_86,code=compute_86 -DBF16_AVAILABLE -U__CUDA_NO_BFLOAT16_OPERATORS__ -U__CUDA_NO_BFLOAT162_OPERATORS__ -U__CUDA_NO_BFLOAT16_CONVERSIONS__ -std=c++17 -c /home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/deepspeed/ops/csrc/adam/multi_tensor_adam.cu -o multi_tensor_adam.cuda.o 
+gcc: fatal error: cannot execute ‘cc1plus’: execvp: No such file or directory
+compilation terminated.
+nvcc fatal   : Failed to preprocess host compiler properties.
+ninja: build stopped: subcommand failed.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/utils/cpp_extension.py", line 2104, in _run_ninja_build
+[rank0]:     subprocess.run(
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/subprocess.py", line 526, in run
+[rank0]:     raise CalledProcessError(retcode, process.args,
+[rank0]: subprocess.CalledProcessError: Command '['ninja', '-v']' returned non-zero exit status 1.
+
+[rank0]: The above exception was the direct cause of the following exception:
+
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/runpy.py", line 196, in _run_module_as_main
+[rank0]:     return _run_code(code, main_globals, None,
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/runpy.py", line 86, in _run_code
+[rank0]:     exec(code, run_globals)
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/FlagEmbedding/finetune/embedder/encoder_only/base/__main__.py", line 31, in <module>
+[rank0]:     main()
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/FlagEmbedding/finetune/embedder/encoder_only/base/__main__.py", line 27, in main
+[rank0]:     runner.run()
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/FlagEmbedding/abc/finetune/embedder/AbsRunner.py", line 149, in run
+[rank0]:     self.trainer.train(resume_from_checkpoint=self.training_args.resume_from_checkpoint)
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/transformers/trainer.py", line 2245, in train
+[rank0]:     return inner_training_loop(
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/transformers/trainer.py", line 2372, in _inner_training_loop
+[rank0]:     model, self.optimizer, self.lr_scheduler = self.accelerator.prepare(
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/accelerate/accelerator.py", line 1318, in prepare
+[rank0]:     result = self._prepare_deepspeed(*args)
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/accelerate/accelerator.py", line 1815, in _prepare_deepspeed
+[rank0]:     engine, optimizer, _, lr_scheduler = deepspeed.initialize(**kwargs)
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/deepspeed/__init__.py", line 193, in initialize
+[rank0]:     engine = DeepSpeedEngine(args=args,
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/deepspeed/runtime/engine.py", line 313, in __init__
+[rank0]:     self._configure_optimizer(optimizer, model_parameters)
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/deepspeed/runtime/engine.py", line 1276, in _configure_optimizer
+[rank0]:     basic_optimizer = self._configure_basic_optimizer(model_parameters)
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/deepspeed/runtime/engine.py", line 1353, in _configure_basic_optimizer
+[rank0]:     optimizer = FusedAdam(
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/deepspeed/ops/adam/fused_adam.py", line 94, in __init__
+[rank0]:     fused_adam_cuda = FusedAdamBuilder().load()
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 531, in load
+[rank0]:     return self.jit_load(verbose)
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/deepspeed/ops/op_builder/builder.py", line 578, in jit_load
+[rank0]:     op_module = load(name=self.name,
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/utils/cpp_extension.py", line 1314, in load
+[rank0]:     return _jit_compile(
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/utils/cpp_extension.py", line 1721, in _jit_compile
+[rank0]:     _write_ninja_file_and_build_library(
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/utils/cpp_extension.py", line 1833, in _write_ninja_file_and_build_library
+[rank0]:     _run_ninja_build(
+[rank0]:   File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/utils/cpp_extension.py", line 2120, in _run_ninja_build
+[rank0]:     raise RuntimeError(message) from e
+[rank0]: RuntimeError: Error building extension 'fused_adam'
+[rank0]:[W404 15:27:03.680711490 ProcessGroupNCCL.cpp:1250] Warning: WARNING: process group has NOT been destroyed before we destruct ProcessGroupNCCL. On normal program exit, the application should call destroy_process_group to ensure that any pending NCCL operations have finished in this process. In rare cases this process can exit before this point and block the progress of another member of the process group. This constraint has always been present,  but this warning has only been added since PyTorch 2.4 (function operator())
+E0404 15:27:04.231000 415328 site-packages/torch/distributed/elastic/multiprocessing/api.py:869] failed (exitcode: 1) local_rank: 0 (pid: 415370) of binary: /home/jie/anaconda3/envs/llm/bin/python
+Traceback (most recent call last):
+  File "/home/jie/anaconda3/envs/llm/bin/torchrun", line 8, in <module>
+    sys.exit(main())
+  File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 355, in wrapper
+    return f(*args, **kwargs)
+  File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/distributed/run.py", line 919, in main
+    run(args)
+  File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/distributed/run.py", line 910, in run
+    elastic_launch(
+  File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 138, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+  File "/home/jie/anaconda3/envs/llm/lib/python3.10/site-packages/torch/distributed/launcher/api.py", line 269, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+FlagEmbedding.finetune.embedder.encoder_only.base FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2025-04-04_15:27:04
+  host      : pku
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 415370)
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

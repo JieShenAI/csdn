@@ -177,5 +177,8 @@ output/
 *.bkp
 *delete
 *draft
-
+*.zip
+cache/
 test.*
+
+wandb/
