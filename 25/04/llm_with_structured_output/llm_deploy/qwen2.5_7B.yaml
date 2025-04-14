@@ -1,0 +1,8 @@
+model_name_or_path: Qwen/Qwen2.5-7B-Instruct
+template: qwen
+infer_backend: vllm
+vllm_enforce_eager: true
+
+# 大模型部署命令
+# llamafactory-cli api lora_vllm.yaml
+
