@@ -11,8 +11,10 @@ github 只有代码，没有数据。网盘链接包括数据示例。
 
 * Github: [https://github.com/JieShenAI/csdn/tree/main/25/04/llm_with_structured_output](https://github.com/JieShenAI/csdn/tree/main/25/04/llm_with_structured_output)
 
+  本文结构化输出教程地址：[https://github.com/JieShenAI/csdn/blob/main/25/04/llm_with_structured_output/struct_output.ipynb](https://github.com/JieShenAI/csdn/blob/main/25/04/llm_with_structured_output/struct_output.ipynb)
+
 * 通过网盘分享的文件：llm_with_structured_output
-  链接: https://pan.baidu.com/s/1zb3TEXq7m7A2VS7xnT8zrg 提取码: free
+  链接: [https://pan.baidu.com/s/1zb3TEXq7m7A2VS7xnT8zrg?free](https://pan.baidu.com/s/1zb3TEXq7m7A2VS7xnT8zrg?free)
 
 ## 大模型结构化输出
 
@@ -570,7 +572,7 @@ vllm_enforce_eager: true
 
 ## 总结
 
-采用了 function call 的 with_structured_output 的文本分类效果与其他方法都差不多。在提示词写的准确后，with_structured_output  可以放心使用，能简化代码，不用自己再写正则表达式抽取大模型返回的结果。
+采用了 function call 的 with_structured_output 的文本分类效果与其他方法都差不多。在提示词写准确后，with_structured_output  可以放心使用，能简化代码，不用自己再写正则表达式抽取大模型返回的结果。
 
 从速度方面看，采用 vllm_infer 速度最快，而且文本分类效果也不会下降。
 
