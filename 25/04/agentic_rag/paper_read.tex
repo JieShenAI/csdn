@@ -1,0 +1,65 @@
+\documentclass{article}
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage[UTF8]{ctex}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{Paper Read: AGENTIC RETRIEVAL-AUGMENTED GENERATION: A SURVEY ON
+AGENTIC RAG}
+\author{Jie Shen}
+
+\begin{document}
+\maketitle
+\section{Evolution of RAG Paradigms}
+The field of Retrieval-Augmented Generation (RAG) has evolved significantly to address the increasing complexity of
+real-world applications, where contextual accuracy, scalability, and multi-step reasoning are critical. What began as
+simple keyword-based retrieval has transitioned into sophisticated, modular, and adaptive systems capable of integrating
+diverse data sources and autonomous decision-making processes. This evolution underscores the growing need for
+RAG systems to handle complex queries efficiently and effectively.
+
+\subsection{Naive RAG}
+Retrieved documents often fail to capture the semantic nuances of the query
+due to reliance on lexical matching rather than semantic understanding.
+
+RAG 通常不能抓住语义细微差别，因为它依赖于词汇匹配而不是语义理解。
+如果是复杂的query可把它拆分为简单的query，再做召回的时候就可以提高召回率了。
+\begin{itemize}
+\item Lack of Contextual Awareness: Retrieved documents often fail to capture the semantic nuances of the query
+due to reliance on lexical matching rather than semantic understanding.
+\item Fragmented Outputs: The absence of advanced preprocessing or contextual integration often leads to
+disjointed or overly generic responses.
+\item Scalability Issues: Keyword-based retrieval techniques struggle with large datasets, often failing to identify
+the most relevant information.
+\end{itemize}
+
+\section{Challenges and Limitations of Traditional RAG Systems}
+\subsection{Contextual Integration}
+
+\textbf{Multi-Step Reasoning}:
+
+Many real-world queries require iterative or multi-hop reasoning—retrieving and synthesizing information across
+multiple steps. 
+Traditional RAG systems are often ill-equipped to refine retrieval based on intermediate insights or user
+feedback, resulting in incomplete or disjointed responses.
+
+比如: HotpotQA 数据集，要求模型在多步推理中进行检索和生成。
+
+\section{Core Principles and Background of Agentic Intelligence}
+
+LLM (with defined Role and Task): Serves as the agent’s primary reasoning engine and dialogue interface.
+It interprets user queries, generates responses, and maintains coherence.
+
+Memory (Short-Term and Long-Term): Captures context and relevant data across interactions. Short-term
+memory [22] tracks immediate conversation state, while long-term memory [22]stores accumulated knowledge
+and agent experiences.
+
+Planning (Reflection \& Self-Critique): Guides the agent’s iterative reasoning process through reflection,
+query routing, or self-critique[23], ensuring that complex tasks are broken down effectively [24].
+
+Tools Vector Search, Web Search, APIs, etc.: Expands the agent’s capabilities beyond text generation,
+enabling access to external resources, real-time data, or specialized computations.
+
+\bibliographystyle{plain}
+\bibliography{ref}
+\end{document}

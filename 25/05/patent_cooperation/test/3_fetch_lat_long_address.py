@@ -27,8 +27,8 @@ def load_json(file) -> Dict:
         return json.load(f)
 
 
-file = "output/all_companies.csv"
-address_col_name = "companies"
+file = "../data/2.5w_新一代信息技术企业.csv"
+address_col_name = "注册地址"
 
 if file.endswith(".csv"):
     df = pd.read_csv(file)
@@ -37,7 +37,8 @@ else:
 
 
 # 每秒最多 3 个请求
-MAX_WORKERS = 2.8  # 根据API限制调整并发数
+# MAX_WORKERS = 2.8  # 根据API限制调整并发数
+MAX_WORKERS = 25  # 根据API限制调整并发数
 MAX_ERR_NUM = 20
 err_cnt = 0
 
@@ -52,7 +53,8 @@ TIMEOUT = 10  # 请求超时时间
 
 output_fold = "API_results"
 os.makedirs(output_fold, exist_ok=True)
-base_name = os.path.basename(file).split(".")[0]
+# base_name = os.path.basename(file).split(".")[0]
+base_name = "企业注册地址"
 output_file = os.path.join(output_fold, f"{base_name}.json")
 
 ANS = {}
@@ -70,6 +72,7 @@ class MaxErrorExceededException(Exception):
 
 
 async def geocoding(session, idx, address):
+    address = address.strip()
     """地理编码请求函数（带重试机制）"""
     params = {
         "address": address,
