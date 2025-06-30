@@ -188,3 +188,5 @@ delete
 *.bak
 
 langgraph/
+logs/
+data/
