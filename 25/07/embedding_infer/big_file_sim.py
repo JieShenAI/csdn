@@ -104,7 +104,7 @@ def run_big_file(file_name, output_file, split_file=True, chunksize=int(5e5)):
     file_size_mb = os.path.getsize(file_name) / (1024 * 1024)  # 转为MB
 
     if not split_file or file_size_mb < 1024:
-        # 过小的文件，不需要分块处理，超过10GB是大文件
+        # 过小的文件，不需要分块处理，超过1024MB是大文件
         df = pd.read_csv(file_name, low_memory=False)
         run(df, output_file)
         return
