@@ -8,22 +8,12 @@ def run_ffmpeg(input_file1, input_file2, output_file) -> bool:
     try:
         cmd = [
             "ffmpeg",
-            "-hwaccel",
-            "cuda",
             "-i",
             input_file1,
             "-i",
             input_file2,
-            "-c:a",
+            "-c",
             "copy",
-            "-c:s",
-            "copy",
-            "-c:v",
-            "h264_nvenc",
-            "-preset",
-            "p7",
-            "-tune",
-            "hq",
             output_file,
         ]
 
@@ -69,6 +59,6 @@ if __name__ == "__main__":
             os.path.join(output_folder, f"{base_name.split('-')[0]}.mp4"),
         )
         # 只有运行成功后才会删除文件
-        if merge_ok:
-            os.remove(file_name)
-            os.remove(file_name2)
+        # if merge_ok:
+        #     os.remove(file_name)
+        #     os.remove(file_name2)

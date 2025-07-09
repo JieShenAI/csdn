@@ -49,8 +49,6 @@ def collate_fn(batch):
 
 # tokenizer 放在 collate_fn 里面，使用 max_workers 反而是增加了进程加载与切换的负担
 # 尽量让 collate_fn 尽可能轻量（避免计算、日志），故在该脚本中不设置 max_workers
-
-# 发现在num_workers设置num_workers参数，并没有提高速度，反而还降低了速度
 # def safe_num_workers(dataset_len, max_workers=8):
 #     return 0 if dataset_len <= 10000 else max_workers
 
@@ -104,17 +102,18 @@ def run_big_file(file_name, output_file, split_file=True, chunksize=int(5e5)):
     file_size_mb = os.path.getsize(file_name) / (1024 * 1024)  # 转为MB
 
     if not split_file or file_size_mb < 1024:
-        # 过小的文件，不需要分块处理，超过1024MB是大文件
+        # 过小的文件，不需要分块处理，超过10GB是大文件
         df = pd.read_csv(file_name, low_memory=False)
         run(df, output_file)
         return
-    
+
     print(f"loading {basename}")
     df_blocks = pd.read_csv(file_name, chunksize=chunksize, low_memory=False)
     cache_fold = "cache"
     output_parent_dir = os.path.dirname(output_file)
     os.makedirs(os.path.join(output_parent_dir, cache_fold), exist_ok=True)
     data = []
+    delete_files = []
     for idx, tmp_df in enumerate(df_blocks):
         print(f"processing part {idx} of {basename}")
         tmp_output_file = os.path.join(
@@ -124,12 +123,17 @@ def run_big_file(file_name, output_file, split_file=True, chunksize=int(5e5)):
             data.append(pd.read_csv(tmp_output_file, low_memory=False))
         else:
             data.append(run(tmp_df, tmp_output_file))
+        
+        delete_files.append(tmp_output_file)
     df = pd.concat(data)
+
+    # 如果文件过大，在导出文本的过程中，可能会崩溃
+    # cache文件夹中，若存在没有删除的文件，则说明该文件导出失败
     df.to_csv(output_file, index=False)
 
-    # 最终的文本合并且导出完成，删除分块文件
-    for tmp_output_file in glob.glob(os.path.join(output_parent_dir, cache_fold, "*")):
-        os.remove(tmp_output_file)
+    # 最终的文本合并且导出完成，只能删除cache文件夹中当前分块的文件
+    for delete_file in delete_files:
+        os.remove(delete_file)
 
 
 if __name__ == "__main__":
@@ -140,6 +144,8 @@ if __name__ == "__main__":
         p = os.path.join(raw_data_dir, sub_fold)
         for name in os.listdir(p):
             file_name = os.path.join(p, name)
+            if not file_name.endswith(".csv"):
+                continue
             output_sub_dir = os.path.join(output_dir, sub_fold)
             os.makedirs(output_sub_dir, exist_ok=True)
             output_file = os.path.join(output_sub_dir, name)
