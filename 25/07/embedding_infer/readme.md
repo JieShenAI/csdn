@@ -223,4 +223,14 @@ BGE 系列的embedding模型默认使用 cls token 对应的tensor作为encode�
 上述从零开始的实现，我验证过了与上述FlagEmbedding包计算的结果一致。
 
 得到的结果如下图所示，在表格右侧添加了一个属性列：
+
 ![image-20250702104808642](readme.assets/image-20250702104808642.png)
+
+
+## 开源
+地址：[https://github.com/JieShenAI/csdn/tree/main/25/07/embedding_infer](https://github.com/JieShenAI/csdn/tree/main/25/07/embedding_infer)
+
+- vector_smilority.py: FlagEmbedding包完成计算
+- scratch.py: 从零开始实现
+
+两个脚本得到的计算结果是一样的
