@@ -34,7 +34,7 @@ limiter = AsyncLimiter(MAX_WORKERS, 1)
 
 # 百度地图接口配置
 API_URL = "https://restapi.amap.com/v3/geocode/geo"
-AK = "d024ac887013921526afd95b8be25f5a"
+AK = "高德地图key"
 
 file = "data/包含有地址的excel文件.xlsx"
 print("load excel")
