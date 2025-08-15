@@ -1,0 +1,25 @@
+[project]
+name = "industry-classify-qwen3"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "langchain>=0.3.27",
+    "langchain-community>=0.3.27",
+    "langchain-core>=0.3.74",
+    "langchain-experimental>=0.3.4",
+    "langchain-openai>=0.3.30",
+    "openpyxl>=3.1.5",
+    "pandas>=2.3.1",
+    "pymongo>=4.14.0",
+]
+
+[[tool.uv.index]]
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
+
+[dependency-groups]
+dev = [
+    "ipykernel>=6.30.1",
+]
