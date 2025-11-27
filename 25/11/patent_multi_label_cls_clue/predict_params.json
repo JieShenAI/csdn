@@ -1,0 +1,11 @@
+{
+  "output_dir": "output",
+  "patent_predict_csv_file": "data/raw_data.csv",
+  "model_name_or_path": "output/best_model",
+  "per_device_eval_batch_size":16,
+  "logging_steps": 20,
+  "remove_unused_columns": false,
+  "bf16": true,
+  "bf16_full_eval": true,
+  "tf32": true
+}

@@ -1,0 +1,18 @@
+{
+  "output_dir": "output",
+  "patent_train_json_file": "data/data.jsonl",
+  "model_name_or_path": "google-bert/bert-base-chinese",
+  "per_device_train_batch_size": 16,
+  "per_device_eval_batch_size":16,
+  "num_train_epochs": 5,
+  "eval_strategy": "epoch",
+  "save_strategy":"epoch",
+  "warmup_ratio": 0.1,
+  "logging_steps": 20,
+  "lr_scheduler_type":"cosine",
+  "load_best_model_at_end":true,
+  "metric_for_best_model":"f1",
+  "save_total_limit": 3,
+  "report_to":"tensorboard",
+  "remove_unused_columns": false
+}

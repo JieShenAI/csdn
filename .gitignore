@@ -170,8 +170,6 @@ LLaMA-Factory/*
 *.log
 output/
 .env
-*.json
-*.jsonl
 *.csv
 *.xls*
 *.bkp
