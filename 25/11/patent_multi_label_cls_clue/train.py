@@ -1,16 +1,16 @@
+import logging
 import os
 import sys
-import logging
-import torch
-import pandas as pd
-import numpy as np
-from transformers.trainer_utils import get_last_checkpoint
-from transformers import HfArgumentParser, TrainingArguments, Trainer, AutoTokenizer
-from arguments import PatentDataArgs, PatentModelArgs
-from model import PatentClassifier, compute_metrics
-from data import PatentDataset, PatentPredictDataset, PatentCollator
-from torch.utils.data import random_split
 
+import pandas as pd
+import torch
+from torch.utils.data import random_split
+from transformers import HfArgumentParser, TrainingArguments, Trainer, AutoTokenizer
+from transformers.trainer_utils import get_last_checkpoint
+
+from arguments import PatentDataArgs, PatentModelArgs
+from data import PatentDataset, PatentPredictDataset, PatentCollator
+from model import PatentClassifier, compute_metrics
 from settings import PATENT_CLS_NAMES
 
 
@@ -102,5 +102,5 @@ class PatentTrainer:
 
 if __name__ == "__main__":
     patent_trainer = PatentTrainer()
-    # patent_trainer.train()
-    patent_trainer.predict()
+    patent_trainer.train()
+    # patent_trainer.predict()

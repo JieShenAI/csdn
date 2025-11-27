@@ -1,10 +1,9 @@
+import torch
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 from torch import nn
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
-from settings import PATENT_CLS_NAMES
 
-import torch
-import numpy as np
-from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
+from settings import PATENT_CLS_NAMES
 
 
 def compute_metrics(eval_pred):
@@ -56,7 +55,6 @@ class PatentClassifier(nn.Module):
 
     # def forward(self, text_tokens, labels=None):
     def forward(self, input_ids, attention_mask, labels=None):
-        # output = self.model(input_ids=input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids)
         output = self.model(input_ids=input_ids, attention_mask=attention_mask)
         logits = output.logits
         if labels is not None:

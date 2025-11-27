@@ -1,15 +1,15 @@
-import os
 import json
+
 import pandas as pd
 import torch
-from torch.utils.data import Dataset
 from datasets import load_dataset
+from torch.utils.data import Dataset
 from transformers import AutoTokenizer
+
 # from transformers.data.data_collator import DataCollatorWithPadding
 from arguments import PatentDataArgs
-
-
 from settings import PATENT_CLS_NAMES, PATENT_CLS_ORDER
+
 
 class PatentDataset(Dataset):
     def __init__(self, json_file):
@@ -23,15 +23,7 @@ class PatentDataset(Dataset):
 
     def __getitem__(self, idx):
         patent_text = self.patent_text[idx]
-        pred_label = json.loads(self.pred_label[idx])
         labels = [0.] * len(PATENT_CLS_NAMES)
-        clue = []
-        for k, v in pred_label.items():
-            label_idx = PATENT_CLS_ORDER.get(k, -1)
-            if label_idx != -1 and v:
-                labels[label_idx] = 1.
-                clue.append(k)
-        patent_text += "\n\n候选类别:" + " ".join(clue)
         return {"patent_text": patent_text, "labels": labels}
 
 class PatentPredictDataset(Dataset):
