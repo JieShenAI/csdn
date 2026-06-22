@@ -1,8 +1,8 @@
 dataset_name=$1
 raw_model_name=$2
 batch_size=${3:-32}
-desc=${4:""}
-epochs=1
+epochs=${4:-10}
+desc=${5:-""}
 
 output_home=output
 

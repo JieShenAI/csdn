@@ -30,17 +30,29 @@ def compute_metrics(eval_pred):
         包含评估指标的字典
     """
     # 从EvalPrediction对象中获取预测结果和真实标签
-    predictions, label = eval_pred
+    # predictions, label = eval_pred
+
+    if isinstance(eval_pred.predictions, tuple):
+        if len(eval_pred.predictions) >= 2:
+            logits = eval_pred.predictions[0]
+    else:
+        # 兼容未返回alpha的情况（兜底）
+        logits = eval_pred.predictions
+        # alpha = None
+
+    # 真实标签
+    labels = eval_pred.label_ids
+
     # 将logits转换为预测类别（取概率最大的类别）
-    preds = np.argmax(predictions, axis=-1)
+    preds = np.argmax(logits, axis=-1)
 
     # 计算准确率
-    accuracy = accuracy_score(label, preds)
+    accuracy = accuracy_score(labels, preds)
 
     # 计算精确率、召回率和F1分数（支持多类别和二分类）
     # average参数：'micro'、'macro'、'weighted'或None
     precision, recall, f1, _ = precision_recall_fscore_support(
-        label, preds, average="weighted"
+        labels, preds, average="weighted"
     )
 
     # 返回评估指标字典
@@ -55,23 +67,23 @@ class TrainerUtil:
         self.datacollator_class = datacollator_class
         self.trainer_class = trainer_class
         self.start_up()
-        self.set_dataset()
-        self.set_model()
 
-        self.logger.info(self.train_dataset[0])
-        self.logger.info(
-            f"train on {len(self.train_dataset)} samples, eval on {len(self.eval_dataset)} samples"
-        )
-        self.trainer = self.trainer_class(
-            model=self.model,
-            args=self.training_args,
-            train_dataset=self.train_dataset,
-            eval_dataset=self.eval_dataset,
-            data_collator=self.datacollator_class(
-                data_args=self.data_args, tokenizer=self.tokenizer
-            ),
-            compute_metrics=compute_metrics,
-        )
+        # 如果 best_model 已存在则不训练模型
+        self.best_model_exists = os.path.exists(self.best_model_dir)
+
+        if self.training_args.do_train and self.best_model_exists:
+            self.trainer = None
+        else:
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                self.model_args.model_name_or_path
+            )
+            self.set_dataset()
+            self.logger.info(self.train_dataset[0])
+            self.logger.info(
+                f"train on {len(self.train_dataset)} samples, eval on {len(self.eval_dataset)} samples"
+            )
+            self.set_model()
+            self.set_trainer()
 
     def set_model(self):
         raise NotImplementedError
@@ -114,6 +126,18 @@ class TrainerUtil:
 
         # if "qwen" in self.model_args.model_name_or_path.lower():
         #     self.model.model.config.pad_token_id = self.tokenizer.pad_token_id
+
+    def set_trainer(self):
+        self.trainer = self.trainer_class(
+            model=self.model,
+            args=self.training_args,
+            train_dataset=self.train_dataset,
+            eval_dataset=self.eval_dataset,
+            data_collator=self.datacollator_class(
+                data_args=self.data_args, tokenizer=self.tokenizer
+            ),
+            compute_metrics=compute_metrics,
+        )
 
     def save(self, save_model_dir):
         self.tokenizer.save_pretrained(save_model_dir)

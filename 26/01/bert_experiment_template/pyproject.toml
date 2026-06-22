@@ -9,9 +9,15 @@ dependencies = [
     "datasets>=4.4.2",
     "deepspeed",
     "scikit-learn>=1.8.0",
-    "torch>=2.9.0",
+    "torch==2.11.0",
     "transformers",
 ]
+
+[[tool.uv.index]]
+name = "tuna"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple"
+default = true
+
 [[tool.uv.index]]
 name = "pytorch-cu130"
 url = "https://download.pytorch.org/whl/cu130"

@@ -8,8 +8,8 @@ class ModelArguments:
     Arguments pertaining to which model/config/tokenizer we are going to fine-tune from.
     """
 
-    model_name_or_path: str = field(
-        metadata={"help": "Bert pre-trained bert model name or path"}
+    hf_name: str = field(
+        metadata={"help": "Pre-trained model name in huggingface"}
     )
     num_label: int = field(default=-1, metadata={"help": "Number of labels"})
 
